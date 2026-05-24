@@ -44,7 +44,7 @@ aegis demo
 
 > "What `aegis demo` does: it resets the database, ingests five sample scenarios, runs the full pipeline — normalize, correlate, classify, risk-score, recommend a policy — and prints a dashboard.
 >
-> Look at the top of the dashboard. **Ten agents discovered. Fourteen findings. Four HIGH-risk, one MEDIUM, five LOW. Three different policies recommended.**
+> Look at the top of the dashboard. **Ten agents discovered. Eleven findings. Four HIGH-risk, one MEDIUM, five LOW. Three different policies recommended.**
 >
 > Now look at the top row of the agent table. That's the shadow-PHI agent. **`nhi_id` is `role-aegis-shadow-agent`, workload `claims-processor`, framework `langchain`, risk score 87, tier HIGH, policy `phi-handling-v3`.** Compare that to the spec example — every field matches exactly, score included.
 >
@@ -128,9 +128,9 @@ aegis show <agent_id_of_shadow_phi>
 pytest -q
 ```
 
-> "233 tests, ten seconds.
+> "233 tests, about nine seconds.
 >
-> Spread across twelve files. The headline ones:
+> Spread across sixteen files. The headline ones:
 >
 > **`test_correlator.py` plus `test_correlator_edge_cases.py`** — 43 tests covering every spec-required edge case plus exact time-boundary tests, scaling tests, and adversarial identity collisions.
 >
