@@ -1,6 +1,6 @@
 # Demo Video Script
 
-**Total runtime:** ~11 minutes
+**Target runtime:** 11–12 minutes (measured by reading the narration at ~140 wpm)
 **Format:** screencast + voiceover (no face cam needed)
 **Tool:** [Loom](https://www.loom.com) (free, easiest) or QuickTime (Mac built-in, `File → New Screen Recording` with microphone)
 **Setup:**
@@ -93,7 +93,7 @@ aegis show <agent_id_of_shadow_phi>
 
 ---
 
-## Section 4 — Risk + policy: explainable, not magic (6:30 – 8:30)
+## Section 4 — Risk + policy: explainable, not magic (6:30 – 9:00)
 
 > "Risk scoring is a 0–100 composite over four explicit factors, with weights summing to 100. Scope 25, Sensitivity 35, Autonomy 20, Drift 20.
 >
@@ -121,7 +121,7 @@ aegis show <agent_id_of_shadow_phi>
 
 ---
 
-## Section 5 — Test discipline (8:30 – 9:30)
+## Section 5 — Test discipline (9:00 – 10:00)
 
 **[TYPE]**
 ```bash
@@ -146,7 +146,7 @@ pytest -q
 
 ---
 
-## Section 6 — Honest limitations (9:30 – 10:30)
+## Section 6 — Honest limitations (10:00 – 11:00)
 
 **On screen:** open `docs/FAILURE_MODES.md`.
 
@@ -164,7 +164,7 @@ pytest -q
 
 ---
 
-## Section 7 — Path to production + close (10:30 – 11:00)
+## Section 7 — Path to production + close (11:00 – 12:00)
 
 > "The `ARCHITECTURE.md` document has a 'What ships next' table.
 >
