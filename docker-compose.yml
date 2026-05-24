@@ -1,0 +1,15 @@
+services:
+  aegis:
+    build: .
+    container_name: aegis-discovery
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persist the SQLite DB on the host so a container restart keeps state.
+      - ./aegis.db:/app/aegis.db
+      # Mount samples + baselines so changes show up without rebuild.
+      - ./samples:/app/samples:ro
+      - ./baselines.yaml:/app/baselines.yaml:ro
+    environment:
+      AEGIS_DB_URL: "sqlite:////app/aegis.db"
+    restart: unless-stopped

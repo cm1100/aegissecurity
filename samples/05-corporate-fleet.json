@@ -1,0 +1,114 @@
+{
+  "scenario": "05-corporate-fleet",
+  "description": "12 events across 5 logical agents from a mid-sized enterprise. Demonstrates fleet-scale dispatch: one PHI handler (HIGH), one external-LLM researcher (MEDIUM), one well-behaved internal langchain (LOW), one Bedrock direct-SDK agent (MEDIUM), and one orphan runtime event that cannot be tied to anything.",
+  "expected": {
+    "agents": 5,
+    "policy_distribution": {
+      "phi-handling-v3": 1,
+      "external-egress-redact": 2,
+      "audit-all-llm-calls": 1,
+      "none": 1
+    }
+  },
+  "events": [
+    {
+      "event_id": "fleet-f1-rt",
+      "source": "runtime",
+      "timestamp": "2026-05-20T10:00:00Z",
+      "host_id": "host-f1",
+      "pid": 1,
+      "workload_id": "f1-clinical",
+      "destination": "api.anthropic.com",
+      "tools_called": ["ehr_lookup", "summarize"]
+    },
+    {
+      "event_id": "fleet-f1-nhi",
+      "source": "nhi",
+      "timestamp": "2026-05-20T09:55:00Z",
+      "nhi_id": "role-f1-clinical",
+      "workload_id": "f1-clinical",
+      "permissions": ["ehr:Read", "bedrock:InvokeModel"]
+    },
+    {
+      "event_id": "fleet-f1-saas",
+      "source": "saas",
+      "timestamp": "2026-05-20T10:01:00Z",
+      "nhi_id": "role-f1-clinical",
+      "data_classes": ["PHI"],
+      "action": "read",
+      "resource": "ehr.records"
+    },
+    {
+      "event_id": "fleet-f1-repo",
+      "source": "repo",
+      "timestamp": "2026-05-15T10:00:00Z",
+      "repo": "f1-clinical-bot",
+      "workload_id": "f1-clinical",
+      "imports": ["langchain"],
+      "has_aegislib": false
+    },
+    {
+      "event_id": "fleet-f2-rt",
+      "source": "runtime",
+      "timestamp": "2026-05-20T10:05:00Z",
+      "host_id": "host-f2",
+      "pid": 1,
+      "workload_id": "f2-pricing-research",
+      "destination": "api.openai.com",
+      "tools_called": ["web_search"]
+    },
+    {
+      "event_id": "fleet-f2-repo",
+      "source": "repo",
+      "timestamp": "2026-05-15T11:00:00Z",
+      "repo": "f2-pricing-research",
+      "workload_id": "f2-pricing-research",
+      "imports": ["openai"],
+      "has_aegislib": false
+    },
+    {
+      "event_id": "fleet-f3-repo",
+      "source": "repo",
+      "timestamp": "2026-05-10T10:00:00Z",
+      "repo": "f3-internal-docs",
+      "workload_id": "f3-docs-bot",
+      "imports": ["langchain", "aegislib"],
+      "framework_hint": "langchain",
+      "has_aegislib": true
+    },
+    {
+      "event_id": "fleet-f3-nhi",
+      "source": "nhi",
+      "timestamp": "2026-05-19T10:00:00Z",
+      "nhi_id": "role-f3-docs",
+      "workload_id": "f3-docs-bot",
+      "permissions": ["s3:GetObject"]
+    },
+    {
+      "event_id": "fleet-f4-rt",
+      "source": "runtime",
+      "timestamp": "2026-05-20T10:10:00Z",
+      "host_id": "host-f4",
+      "pid": 1,
+      "workload_id": "f4-genai-experiments",
+      "destination": "bedrock-runtime.us-east-1.amazonaws.com",
+      "tools_called": ["claude_invoke"]
+    },
+    {
+      "event_id": "fleet-f4-nhi",
+      "source": "nhi",
+      "timestamp": "2026-05-19T15:00:00Z",
+      "nhi_id": "role-f4-experiments",
+      "workload_id": "f4-genai-experiments",
+      "permissions": ["bedrock:InvokeModel"]
+    },
+    {
+      "event_id": "fleet-f5-orphan",
+      "source": "runtime",
+      "timestamp": "2026-05-20T10:15:00Z",
+      "host_id": "host-f5",
+      "pid": 99,
+      "destination": "api.internal.corp/health"
+    }
+  ]
+}

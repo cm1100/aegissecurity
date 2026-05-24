@@ -1,0 +1,57 @@
+{
+  "scenario": "04-partial-and-out-of-order",
+  "description": "Five events arriving in REVERSE chronological order, one of them is a content-identical duplicate, and each event carries only 1-2 identity keys. Demonstrates: (1) ingest dedup, (2) order-independent correlation, (3) transitive chain assembly via partial keys.",
+  "expected": {
+    "raw_events_after_dedup": 4,
+    "agents": 1,
+    "risk_tier": "HIGH",
+    "recommended_policy": "phi-handling-v3"
+  },
+  "events": [
+    {
+      "event_id": "d-saas-late",
+      "source": "saas",
+      "timestamp": "2026-05-20T10:30:00Z",
+      "nhi_id": "role-ehr-bot",
+      "data_classes": ["PHI"],
+      "action": "read",
+      "resource": "ehr.patient_notes"
+    },
+    {
+      "event_id": "d-saas-late-DUP",
+      "source": "saas",
+      "timestamp": "2026-05-20T10:30:00Z",
+      "nhi_id": "role-ehr-bot",
+      "data_classes": ["PHI"],
+      "action": "read",
+      "resource": "ehr.patient_notes"
+    },
+    {
+      "event_id": "d-runtime",
+      "source": "runtime",
+      "timestamp": "2026-05-20T10:25:00Z",
+      "host_id": "host-d-1",
+      "pid": 7777,
+      "workload_id": "ehr-bot",
+      "destination": "api.anthropic.com",
+      "tools_called": ["ehr_lookup"]
+    },
+    {
+      "event_id": "d-nhi",
+      "source": "nhi",
+      "timestamp": "2026-05-20T10:00:00Z",
+      "nhi_id": "role-ehr-bot",
+      "workload_id": "ehr-bot",
+      "permissions": ["ehr:Read"]
+    },
+    {
+      "event_id": "d-repo",
+      "source": "repo",
+      "timestamp": "2026-05-19T22:00:00Z",
+      "repo": "ehr-bot",
+      "workload_id": "ehr-bot",
+      "imports": ["langchain", "anthropic"],
+      "has_aegislib": false
+    }
+  ]
+}

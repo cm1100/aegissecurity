@@ -1,0 +1,66 @@
+# Workload baselines — the "expected" surface area of a known agent.
+# Rule 3 (unexpected_tool_use) fires when an agent's observed tools /
+# destinations / permissions step outside what's declared here.
+#
+# In production, these declarations would live in a customer-managed
+# policy repo with code-review on every change. For the MVP demo,
+# editing this file is the path of least friction.
+
+claims-processor:
+  tools:
+    - aurora_read
+    - claim_lookup
+  destinations:
+    - api.internal.corp
+  data_classes:
+    - claims_data
+    - internal
+  permissions:
+    - rds-db:connect
+    - aurora:DescribeDBInstances
+    - s3:GetObject
+
+internal-summarizer:
+  tools:
+    - summarize_doc
+  destinations:
+    - llm-gateway.internal.corp
+  data_classes:
+    - internal
+    - public
+  permissions:
+    - s3:GetObject
+    - kms:Decrypt
+
+ehr-bot:
+  tools:
+    - ehr_lookup
+  destinations:
+    - llm-gateway.internal.corp
+  data_classes:
+    - PHI
+    - claims_data
+  permissions:
+    - ehr:Read
+
+f1-clinical:
+  tools:
+    - ehr_lookup
+  destinations:
+    - bedrock-runtime.us-east-1.amazonaws.com
+  data_classes:
+    - PHI
+  permissions:
+    - ehr:Read
+    - bedrock:InvokeModel
+
+f3-docs-bot:
+  tools:
+    - retrieve_doc
+    - summarize_doc
+  destinations:
+    - llm-gateway.internal.corp
+  data_classes:
+    - internal
+  permissions:
+    - s3:GetObject

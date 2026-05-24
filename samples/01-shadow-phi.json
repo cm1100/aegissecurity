@@ -1,0 +1,59 @@
+{
+  "scenario": "01-shadow-phi",
+  "description": "A shadow LangChain agent on the claims-processor workload reads PHI from Aurora and calls Anthropic's API directly. The repo is missing aegislib. This is the headline HIGH-risk discovery.",
+  "expected": {
+    "agents": 1,
+    "risk_tier": "HIGH",
+    "recommended_policy": "phi-handling-v3"
+  },
+  "events": [
+    {
+      "event_id": "shadow-rt-1",
+      "source": "runtime",
+      "timestamp": "2026-05-20T10:15:30Z",
+      "host_id": "ip-10-0-12-42.ec2.internal",
+      "pid": 4242,
+      "workload_id": "claims-processor",
+      "destination": "api.anthropic.com",
+      "tools_called": ["aurora_read", "external_llm_call"],
+      "syscalls": ["connect", "sendto", "recvfrom"],
+      "bytes_out": 18432
+    },
+    {
+      "event_id": "shadow-nhi-1",
+      "source": "nhi",
+      "timestamp": "2026-05-20T10:00:00Z",
+      "nhi_id": "role-aegis-shadow-agent",
+      "workload_id": "claims-processor",
+      "role_arn": "role-aegis-shadow-agent",
+      "permissions": [
+        "rds-db:connect",
+        "aurora:DescribeDBInstances",
+        "bedrock:InvokeModel",
+        "s3:GetObject"
+      ],
+      "last_rotated": "2026-01-10T00:00:00Z"
+    },
+    {
+      "event_id": "shadow-repo-1",
+      "source": "repo",
+      "timestamp": "2026-05-19T09:00:00Z",
+      "repo": "claims-processor",
+      "workload_id": "claims-processor",
+      "imports": ["langchain", "langchain_anthropic", "boto3", "psycopg2"],
+      "framework_hint": "langchain",
+      "has_aegislib": false,
+      "config_files": ["Dockerfile", "k8s/deployment.yaml"]
+    },
+    {
+      "event_id": "shadow-saas-1",
+      "source": "saas",
+      "timestamp": "2026-05-20T10:16:00Z",
+      "nhi_id": "role-aegis-shadow-agent",
+      "data_classes": ["PHI", "claims_data"],
+      "action": "SELECT",
+      "resource": "aurora://claims-db/patient_records",
+      "actor": "claims-processor"
+    }
+  ]
+}

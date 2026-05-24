@@ -1,0 +1,73 @@
+{
+  "scenario": "03-multi-agent-same-host",
+  "description": "Two distinct agents running on the same EC2 instance, distinguished only by PID and IAM role. Stresses the correlator's conflict guard — without it, host-shared events would over-merge into one fictitious agent.",
+  "expected": {
+    "agents": 2,
+    "details": "agent X: HIGH (PHI). agent Y: MEDIUM (financial, no PHI)."
+  },
+  "events": [
+    {
+      "event_id": "host3-X-rt",
+      "source": "runtime",
+      "timestamp": "2026-05-20T10:00:00Z",
+      "host_id": "ip-10-1-1-1.ec2.internal",
+      "pid": 1000,
+      "workload_id": "patient-portal-bot",
+      "destination": "api.anthropic.com",
+      "tools_called": ["patient_lookup", "summarize"]
+    },
+    {
+      "event_id": "host3-X-nhi",
+      "source": "nhi",
+      "timestamp": "2026-05-20T09:55:00Z",
+      "nhi_id": "role-patient-portal",
+      "workload_id": "patient-portal-bot",
+      "permissions": ["patient_db:Read", "bedrock:InvokeModel"]
+    },
+    {
+      "event_id": "host3-X-saas",
+      "source": "saas",
+      "timestamp": "2026-05-20T10:00:30Z",
+      "nhi_id": "role-patient-portal",
+      "data_classes": ["PHI"],
+      "action": "read",
+      "resource": "patient_db.appointments"
+    },
+    {
+      "event_id": "host3-X-repo",
+      "source": "repo",
+      "timestamp": "2026-05-19T14:00:00Z",
+      "repo": "patient-portal-bot",
+      "workload_id": "patient-portal-bot",
+      "imports": ["langchain", "anthropic"],
+      "has_aegislib": false
+    },
+    {
+      "event_id": "host3-Y-rt",
+      "source": "runtime",
+      "timestamp": "2026-05-20T10:00:00Z",
+      "host_id": "ip-10-1-1-1.ec2.internal",
+      "pid": 2000,
+      "workload_id": "billing-reporter",
+      "destination": "api.openai.com",
+      "tools_called": ["sql_query", "format_report"]
+    },
+    {
+      "event_id": "host3-Y-nhi",
+      "source": "nhi",
+      "timestamp": "2026-05-20T09:55:00Z",
+      "nhi_id": "role-billing-reporter",
+      "workload_id": "billing-reporter",
+      "permissions": ["billing_db:Read"]
+    },
+    {
+      "event_id": "host3-Y-saas",
+      "source": "saas",
+      "timestamp": "2026-05-20T10:00:30Z",
+      "nhi_id": "role-billing-reporter",
+      "data_classes": ["financial"],
+      "action": "read",
+      "resource": "billing_db.invoices"
+    }
+  ]
+}
