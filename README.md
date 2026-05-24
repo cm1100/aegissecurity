@@ -405,4 +405,5 @@ pytest -q
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+Submitted as a technical assignment. **All rights reserved** unless
+otherwise agreed in writing.
