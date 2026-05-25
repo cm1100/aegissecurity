@@ -13,3 +13,4 @@ venv/
 .vscode/
 build/
 dist/
+scripts/_video_frames/
