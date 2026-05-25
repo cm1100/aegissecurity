@@ -274,7 +274,7 @@ def slide_03_architecture(d, idx, total):
            "Union-find with confidence-weighted edges + conflict guard.",
            font=sub_f, fill=DIM)
     d.text((MARGIN_X, by + bh + 170),
-           "12 API endpoints · 14 CLI commands · 6 storage tables.",
+           "13 API endpoints · 14 CLI commands · 6 storage tables.",
            font=sub_f, fill=DIM)
 
 
@@ -308,22 +308,25 @@ def slide_05_conflict_guard(d, idx, total):
     chrome(d, "05 · CORRELATION — CONFLICT GUARD", idx, total)
     title_block(d, "The thing I added beyond spec",
                 "Refuses merges that would put distinct strong IDs in one cluster.")
-    # two event clusters — labels go ABOVE the boxes, not inside
+    # Two event clusters — labels above. Generic names (not from any specific
+    # sample) make it clear this is illustrating the principle, not depicting
+    # a particular scenario. The corresponding unit test is
+    # test_distinct_nhi_ids_block_workload_merge.
     bx, by, bw, bh = MARGIN_X, 540, 540, 200
     label_f = _font(24, bold=True)
-    d.text((bx, by - 38), "Agent X  — same workload", font=label_f, fill=ACCENT)
+    d.text((bx, by - 38), "Agent X  — sharing workload W", font=label_f, fill=ACCENT)
     box(d, bx, by, bw, bh, outline=ACCENT, label=None)
     f = _font(24, mono=True)
-    d.text((bx + 30, by + 30),  "nhi_id      = role-patient-portal", font=f, fill=FG)
-    d.text((bx + 30, by + 75),  "workload_id = patient-portal-bot",  font=f, fill=FG)
-    d.text((bx + 30, by + 120), "host_id = h1     pid = 1000",       font=f, fill=FG)
+    d.text((bx + 30, by + 30),  "nhi_id      = role-A",       font=f, fill=FG)
+    d.text((bx + 30, by + 75),  "workload_id = workload-W",   font=f, fill=FG)
+    d.text((bx + 30, by + 120), "host_id = h1     pid = 1000", font=f, fill=FG)
 
     bx2 = W - MARGIN_X - bw
-    d.text((bx2, by - 38), "Agent Y  — same workload", font=label_f, fill=YELLOW)
+    d.text((bx2, by - 38), "Agent Y  — sharing workload W", font=label_f, fill=YELLOW)
     box(d, bx2, by, bw, bh, outline=YELLOW, label=None)
-    d.text((bx2 + 30, by + 30),  "nhi_id      = role-billing-reporter", font=f, fill=FG)
-    d.text((bx2 + 30, by + 75),  "workload_id = patient-portal-bot",    font=f, fill=FG)
-    d.text((bx2 + 30, by + 120), "host_id = h1     pid = 2000",         font=f, fill=FG)
+    d.text((bx2 + 30, by + 30),  "nhi_id      = role-B",       font=f, fill=FG)
+    d.text((bx2 + 30, by + 75),  "workload_id = workload-W",   font=f, fill=FG)
+    d.text((bx2 + 30, by + 120), "host_id = h1     pid = 2000", font=f, fill=FG)
 
     # big red X between the two clusters
     cx, cy = W // 2, by + bh // 2
